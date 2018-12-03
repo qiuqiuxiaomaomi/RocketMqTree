@@ -78,16 +78,39 @@ NameSrv
 RocketMq监控
 
      rocketmq-console
+
+Kafka监控工具
+
+     KafkaOffsetMonitor
 </pre>
 
-kafka拓补图
+kafka拓补图 
 
 
 
-RocketMq拓补图
+RocketMq拓补图 
 
 <pre>
+Master/Slave概念差异
+      Kafka: Master/Slave是个逻辑概念，1台机器，同时具有Master角色和Slave角色。 
+      RocketMQ: Master/Slave是个物理概念，1台机器，只能是Master或者Slave。在集群初始
+      配置的时候，指定死的。其中Master的broker id = 0，Slave的broker id > 0。
+</pre>
 
+<pre>
+为什么可以去ZK?
+      在Kafka里面，Maser/Slave是选举出来的,RocketMQ不需要选举。
+
+      在Kafka里面，Master/Slave的选举，有2步：第1步，先通过ZK在所有机器中，选举出一
+      个KafkaController；第2步，再由这个Controller，决定每个partition的Master是谁，Slave是谁。
+
+      这里的Master/Slave是动态的，也就是说：当Master挂了之后，会有1个Slave切换成Master。
+
+      而在RocketMQ中，不需要选举，Master/Slave的角色也是固定的。当一个Master挂了之后，
+      你可以写到其他Master上，但不会说一个Slave切换成Master。
+
+      这种简化，使得RocketMQ可以不依赖ZK就很好的管理Topic/queue和物理机器的映射关系
+      了，也实现了高可用
 </pre>
 
 <pre>
@@ -164,4 +187,10 @@ RocketMq与Kafka
    开发语言友好性
       卡夫卡采用斯卡拉编写
        RocketMQ采用的Java语言编写
+</pre>
+
+<pre>
+性能稳定
+      1）Topic数的增加对RocketMQ无影响，长时间运行服务非常稳定。
+      2）Kafka 的Topic数量建议不要超过8个。8个以上的Topic会导致Kafka响应时间的剧烈波动，造成部分客户端的响应时间过长，影响客户端投递的实时性以及客户端的业务吞吐量。
 </pre>
