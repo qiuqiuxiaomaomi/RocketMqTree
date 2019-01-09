@@ -241,3 +241,9 @@ kafka主要使用了以下几个方式实现了超高的吞吐率
       数据压缩
           GZIP、Snappy，减少了磁盘I/O和网络的I/O
 </pre>
+
+<pre>
+RocketMq指消息中间件需要解决的问题
+
+      https://www.cnblogs.com/yushangzuiyue/p/9684000.html
+</pre>
