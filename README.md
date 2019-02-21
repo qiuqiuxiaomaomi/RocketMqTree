@@ -247,3 +247,28 @@ RocketMq指消息中间件需要解决的问题
 
       https://www.cnblogs.com/yushangzuiyue/p/9684000.html
 </pre>
+
+<pre>
+RocketMq的Push Pull模式
+
+      在rocketmq里，consumer被分为2类： MqPullConsumer,  MqPushConsumer,其实本质上
+      都是拉模式pull，即consumer轮询从broker拉取消息。
+
+      区别：
+          push:
+              push模式里，consumer把轮询过程封装了，并注册MessageListener监听器，取到
+              消息后，唤醒MessageListener的consumerMessage()来消费，对用户而言，感觉
+              消息是被推送过来的。
+
+          pull:
+              pull方式里，取消息的过程需要用户自己写，首先通过打算消费的topic拿到
+              MessageQueue的集合，遍历MessageQueue的集合，然后针对每个MessageQueue
+              批量取消息，一次取完后，记录该队列下一次要取的开始offset，直到去完了，
+              再换另一个MessageQueue。
+
+      Push:
+           DefaultMQPushConsumer
+
+      Pull:
+           DefaultMQPullConsumer  
+</pre>
